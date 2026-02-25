@@ -1,0 +1,35 @@
+name: Build and push userbox image
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Weekly rebuild — picks up base image security updates.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+env:
+  IMAGE: ghcr.io/repentsinner/userbox
+  REGISTRY: ghcr.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE }}:latest
