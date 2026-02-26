@@ -9,6 +9,7 @@ RUN dnf5 install -y \
         gh \
         chezmoi \
         direnv \
+        bat \
         zoxide \
     && dnf5 clean all
 
