@@ -88,7 +88,7 @@ userbox repo (this repo)
 
 ### R1: Pre-built userbox container image
 
-*Status: not started*
+*Status: in progress*
 
 A new repo shall contain a Containerfile based on
 `registry.fedoraproject.org/fedora-toolbox:42` that installs:
@@ -119,7 +119,7 @@ pushing. CI rebuilds the image, and the next login picks it up.
 
 ### R2: CI build and publish
 
-*Status: not started*
+*Status: complete*
 
 GitHub Actions shall build and push the image to
 `ghcr.io/repentsinner/userbox:latest` on push to `main` and on a weekly
