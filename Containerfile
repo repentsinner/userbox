@@ -22,6 +22,7 @@ RUN dnf5 install -y \
         gtk3-devel \
         mesa-libGL-devel \
         mesa-libEGL-devel \
+        mesa-libgbm-devel \
         egl-utils \
         systemd-devel \
     && dnf5 clean all
