@@ -34,6 +34,7 @@ Containerfile, push, and the next login picks up the change.
 | `gtk3-devel` | GTK3 headers |
 | `mesa-libGL-devel` | OpenGL headers |
 | `mesa-libEGL-devel` | EGL headers |
+| `mesa-libgbm-devel` | GBM headers |
 | `egl-utils` | `eglinfo` diagnostic |
 | `systemd-devel` | libudev headers |
 
