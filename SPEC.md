@@ -81,7 +81,7 @@ userbox repo (this repo)
   distrobox assemble create (host)
         │
         ▼
-  ~/.local/bin/{gh,eza,starship,fvm,...}  ← distrobox-export wrappers
+  ~/.local/bin/{gh,eza,starship,fvm,cmake,...}  ← distrobox-export wrappers
 ```
 
 ## Requirements
@@ -94,11 +94,21 @@ A new repo shall contain a Containerfile based on
 `registry.fedoraproject.org/fedora-toolbox:42` that installs:
 
 - RPM packages (default repos): `gh`, `chezmoi`, `direnv`, `zoxide`.
+- Flutter Linux build toolchain (default repos): whatever system
+  packages are needed for `flutter doctor` to report a working Linux
+  toolchain — C++ compiler, CMake, ninja, GTK3 headers, Mesa/EGL
+  headers, libudev headers, and `pkg-config`. Resolved to concrete
+  Fedora package names in the Containerfile.
 - RPM packages (COPR `atim/starship`): `starship`.
 - Direct binary installs: `eza` (GitHub release tarball — orphaned in
   Fedora 42 repos), `bws` (Bitwarden Secrets CLI from
   `bitwarden/sdk` GitHub releases), `fvm` (Flutter Version Manager
   from `fvm.app` install script — no self-update command).
+
+`fvm` manages the Flutter SDK; the image provides the system
+libraries and compilers it links against. Build dependencies are
+installed in a separate Containerfile layer from CLI user tools to
+keep layer caching independent.
 
 The Containerfile shall follow the fedora-toolbox contract (preserve
 distrobox compatibility — don't remove `sudo`, don't change the
