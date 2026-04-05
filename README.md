@@ -29,6 +29,8 @@ Containerfile, push, and the next login picks up the change.
 |---|---|
 | `clang` | C++ compiler |
 | `libcxx-devel` | libc++ headers (`-stdlib=libc++`) |
+| `libcxx-static` | `libc++.a` for static linking |
+| `libcxxabi-static` | `libc++abi.a` for static linking |
 | `cmake` | Build system |
 | `ninja-build` | Build tool |
 | `gtk3-devel` | GTK3 headers |
