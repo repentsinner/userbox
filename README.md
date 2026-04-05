@@ -28,6 +28,7 @@ Containerfile, push, and the next login picks up the change.
 | Package | Purpose |
 |---|---|
 | `clang` | C++ compiler |
+| `libcxx-devel` | libc++ headers (`-stdlib=libc++`) |
 | `cmake` | Build system |
 | `ninja-build` | Build tool |
 | `gtk3-devel` | GTK3 headers |
