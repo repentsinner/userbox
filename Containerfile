@@ -17,6 +17,8 @@ RUN dnf5 install -y \
 RUN dnf5 install -y \
         clang \
         libcxx-devel \
+        libcxx-static \
+        libcxxabi-static \
         cmake \
         ninja-build \
         gtk3-devel \
