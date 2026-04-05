@@ -16,6 +16,7 @@ RUN dnf5 install -y \
 # --- Flutter Linux build toolchain (default repos) ---
 RUN dnf5 install -y \
         clang \
+        libcxx-devel \
         cmake \
         ninja-build \
         gtk3-devel \
