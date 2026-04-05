@@ -88,34 +88,30 @@ userbox repo (this repo)
 
 ### R1: Pre-built userbox container image
 
-*Status: in progress*
+*Status: complete*
 
-A new repo shall contain a Containerfile based on
-`registry.fedoraproject.org/fedora-toolbox:42` that installs:
+A Containerfile based on `registry.fedoraproject.org/fedora-toolbox:42`
+produces the userbox image. It installs four categories of packages,
+each in a separate layer for independent cache invalidation:
 
-- RPM packages (default repos): `gh`, `chezmoi`, `direnv`, `zoxide`.
-- Flutter Linux build toolchain (default repos): whatever system
-  packages are needed for `flutter doctor` to report a working Linux
-  toolchain — C++ compiler, CMake, ninja, GTK3 headers, Mesa/EGL
-  headers, libudev headers, and `pkg-config`. Resolved to concrete
-  Fedora package names in the Containerfile.
-- RPM packages (COPR `atim/starship`): `starship`.
-- Direct binary installs: `eza` (GitHub release tarball — orphaned in
-  Fedora 42 repos), `bws` (Bitwarden Secrets CLI from
-  `bitwarden/sdk` GitHub releases), `fvm` (Flutter Version Manager
-  from `fvm.app` install script — no self-update command).
+- RPM packages (default repos): CLI user tools.
+- Flutter Linux build toolchain (default repos): system libraries and
+  compilers that `fvm`-managed Flutter links against. Concrete Fedora
+  package names are resolved in the Containerfile.
+- RPM packages (COPR): tools not in default Fedora repos.
+- Direct binary installs: tools orphaned or absent from Fedora repos.
 
-`fvm` manages the Flutter SDK; the image provides the system
-libraries and compilers it links against. Build dependencies are
-installed in a separate Containerfile layer from CLI user tools to
-keep layer caching independent.
+Design decisions:
 
-The Containerfile shall follow the fedora-toolbox contract (preserve
-distrobox compatibility — don't remove `sudo`, don't change the
-entrypoint).
-
-Adding tools — CLI or GUI — means editing the Containerfile and
-pushing. CI rebuilds the image, and the next login picks it up.
+- **Separate toolchain layer.** Flutter build deps change on a
+  different cadence than CLI user tools. Independent layers prevent
+  cache busting across groups.
+- **`fvm` in image, Flutter SDK out.** `fvm` manages the SDK at
+  runtime; baking a specific Flutter version would create drift.
+- **fedora-toolbox contract.** The image preserves distrobox
+  compatibility (`sudo`, default entrypoint).
+- **Adding tools = edit Containerfile + push.** CI rebuilds the
+  image; next login picks it up.
 
 ### R2: CI build and publish
 
