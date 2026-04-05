@@ -13,6 +13,18 @@ RUN dnf5 install -y \
         zoxide \
     && dnf5 clean all
 
+# --- Flutter Linux build toolchain (default repos) ---
+RUN dnf5 install -y \
+        clang \
+        cmake \
+        ninja-build \
+        gtk3-devel \
+        mesa-libGL-devel \
+        mesa-libEGL-devel \
+        egl-utils \
+        systemd-devel \
+    && dnf5 clean all
+
 # --- starship (COPR — not in default Fedora 42 repos) ---
 RUN dnf5 -y copr enable atim/starship \
     && dnf5 install -y starship \
