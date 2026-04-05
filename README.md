@@ -9,8 +9,11 @@ Containerfile, push, and the next login picks up the change.
 
 ## What's in the box
 
+### CLI tools
+
 | Tool | Source | Purpose |
 |---|---|---|
+| `bat` | Fedora RPM | Cat with syntax highlighting |
 | `gh` | Fedora RPM | GitHub CLI |
 | `chezmoi` | Fedora RPM | Dotfile manager |
 | `direnv` | Fedora RPM | Per-directory env vars |
@@ -19,6 +22,23 @@ Containerfile, push, and the next login picks up the change.
 | `eza` | GitHub release | Modern ls |
 | `bws` | GitHub release | Bitwarden Secrets CLI |
 | `fvm` | fvm.app installer | Flutter Version Manager |
+
+### Flutter Linux build toolchain
+
+| Package | Purpose |
+|---|---|
+| `clang` | C++ compiler |
+| `cmake` | Build system |
+| `ninja-build` | Build tool |
+| `gtk3-devel` | GTK3 headers |
+| `mesa-libGL-devel` | OpenGL headers |
+| `mesa-libEGL-devel` | EGL headers |
+| `egl-utils` | `eglinfo` diagnostic |
+| `systemd-devel` | libudev headers |
+
+`fvm` manages the Flutter SDK at runtime. These are the system
+libraries and compilers Flutter links against when building for
+Linux desktop.
 
 ## What's NOT in the box
 
@@ -31,6 +51,19 @@ self-update path with a CI rebuild cycle.
 | `uv` | `curl -LsSf https://astral.sh/uv/install.sh \| sh` | `uv self update` |
 | `mise` | `curl https://mise.run \| sh` | `mise self-update` |
 | `claude` | `npm install -g @anthropic-ai/claude-code` | `claude update` |
+
+## Host-side integration
+
+The image alone does nothing — distrobox needs a `.ini` file to
+create the container and export its binaries. That file lives at
+`~/.config/distrobox/userbox.ini` and is managed by
+[chezmoi](https://github.com/repentsinner/dotfiles). It declares
+the image, exported bins, and container lifecycle options
+(`replace=true`, `pull=true`).
+
+When adding a tool to the Containerfile, also add its path to
+`exported_bins` in the `.ini` — otherwise the binary won't appear
+in `~/.local/bin` after container recreation.
 
 ## Adding tools
 
