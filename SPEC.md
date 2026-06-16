@@ -121,6 +121,33 @@ GitHub Actions shall build and push the image to
 `ghcr.io/repentsinner/userbox:latest` on push to `main` and on a weekly
 schedule (to pick up base image security updates).
 
+### R3: Kubernetes/compose client tooling
+
+*Status: not started*
+
+The image provides client tooling for local Kubernetes and Compose
+development against the host's rootless podman: `kubectl`, `kind`,
+`helm`, and `docker-compose` v2 (the Go binary). Each exports to
+`~/.local/bin` so it reaches the host PATH.
+
+Why: per the Tilefin image boundary, on-demand CLI dev toolchains
+belong in userbox, not the immutable OS image. The host-side enabling
+config (cgroup v2 delegation, sysctls, `KIND_EXPERIMENTAL_PROVIDER`)
+stays in the OS image (Tilefin S28); only the tooling lives here. Split
+out of repentsinner/tilefin-nvidia-open#62.
+
+`docker-compose` over `podman-compose`: podman auto-prefers the
+docker-compose Go binary as its Compose provider, and it implements
+Compose semantics faithfully (e.g. `stop <service>` stops all replicas).
+
+Constraint — kind across the container boundary: `kind` exported from
+the userbox distrobox executes inside the container, yet must drive the
+host podman through the wrapper. If nesting breaks rootless cluster
+creation, `kind` ships on the host image instead (revisit Tilefin S28).
+This unknown is resolved before the requirement is marked complete.
+
+Reported in #10.
+
 ## Out of scope
 
 - **Self-managing tools**: Tools with native installers and built-in
