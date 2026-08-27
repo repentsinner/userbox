@@ -12,6 +12,7 @@ RUN dnf5 install -y \
         bat \
         fish \
         rbw \
+        pinentry \
         zoxide \
     && dnf5 clean all
 
