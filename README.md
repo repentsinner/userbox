@@ -18,6 +18,10 @@ Containerfile, push, and the next login picks up the change.
 | `chezmoi` | Fedora RPM | Dotfile manager |
 | `direnv` | Fedora RPM | Per-directory env vars |
 | `zoxide` | Fedora RPM | Smart cd |
+| `fish` | Fedora RPM | Login shell distrobox enters |
+| `rbw` | Fedora RPM | Bitwarden CLI behind the direnv PAT export |
+| `pinentry` | Fedora RPM | Password prompt `rbw unlock` calls |
+| `edid-decode` | Fedora RPM | Decode display EDID blobs |
 | `starship` | COPR `atim/starship` | Shell prompt |
 | `eza` | GitHub release | Modern ls |
 | `bws` | GitHub release | Bitwarden Secrets CLI |
