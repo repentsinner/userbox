@@ -13,6 +13,7 @@ RUN dnf5 install -y \
         fish \
         rbw \
         pinentry \
+        edid-decode \
         zoxide \
     && dnf5 clean all
 
