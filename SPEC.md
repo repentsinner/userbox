@@ -10,8 +10,16 @@ Including them in the image means:
 - Image bloat unrelated to desktop infrastructure.
 - No separation between "OS" and "personal user environment."
 
-Affected packages: `gh`, `chezmoi`, `direnv`, `zoxide`, `starship`,
-`eza`, `bws`.
+Affected packages: `gh`, `chezmoi`, `fvm`.
+
+The shell-integration tier — `bat`, `eza`, `zoxide`, `direnv`,
+`starship` — returned to the system image. Those tools back aliases and
+hooks defined in the image's own shell configuration, and a
+`distrobox-export` wrapper runs them inside the container: `starship`
+then reports the container's `/run/.containerenv` in a host shell, and
+`direnv hook` emits a path the host does not have. Nothing in this
+container ever initialised them — it ships no shell configuration, so
+`distrobox enter` lands on the stock fish prompt.
 
 ## Design
 
@@ -81,7 +89,7 @@ userbox repo (this repo)
   distrobox assemble create (host)
         │
         ▼
-  ~/.local/bin/{gh,eza,starship,fvm,cmake,...}  ← distrobox-export wrappers
+  ~/.local/bin/fvm                              ← distrobox-export wrapper
 ```
 
 ## Requirements
@@ -91,15 +99,14 @@ userbox repo (this repo)
 *Status: complete*
 
 A Containerfile based on `registry.fedoraproject.org/fedora-toolbox:42`
-produces the userbox image. It installs four categories of packages,
+produces the userbox image. It installs three categories of packages,
 each in a separate layer for independent cache invalidation:
 
 - RPM packages (default repos): CLI user tools.
 - Flutter Linux build toolchain (default repos): system libraries and
   compilers that `fvm`-managed Flutter links against. Concrete Fedora
   package names are resolved in the Containerfile.
-- RPM packages (COPR): tools not in default Fedora repos.
-- Direct binary installs: tools orphaned or absent from Fedora repos.
+- Direct binary installs: tools absent from Fedora repos.
 
 Design decisions:
 

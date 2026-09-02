@@ -13,18 +13,12 @@ Containerfile, push, and the next login picks up the change.
 
 | Tool | Source | Purpose |
 |---|---|---|
-| `bat` | Fedora RPM | Cat with syntax highlighting |
 | `gh` | Fedora RPM | GitHub CLI |
 | `chezmoi` | Fedora RPM | Dotfile manager |
-| `direnv` | Fedora RPM | Per-directory env vars |
-| `zoxide` | Fedora RPM | Smart cd |
 | `fish` | Fedora RPM | Login shell distrobox enters |
 | `rbw` | Fedora RPM | Bitwarden CLI behind the direnv PAT export |
 | `pinentry` | Fedora RPM | Password prompt `rbw unlock` calls |
 | `edid-decode` | Fedora RPM | Decode display EDID blobs |
-| `starship` | COPR `atim/starship` | Shell prompt |
-| `eza` | GitHub release | Modern ls |
-| `bws` | GitHub release | Bitwarden Secrets CLI |
 | `fvm` | fvm.app installer | Flutter Version Manager |
 
 ### Flutter Linux build toolchain
@@ -79,9 +73,9 @@ Edit `Containerfile`, push to `main`. CI builds and publishes to
 `ghcr.io/repentsinner/userbox:latest`. Both CLI and GUI tools work —
 distrobox forwards Wayland and GPU access.
 
-## Updating pinned versions
+## Updating versions
 
-`eza` and `bws` are version-pinned as `ARG`s at the top of the
-Containerfile. The weekly CI schedule rebuilds against the latest
-`fedora-toolbox:42` base for security updates, but pinned tools need
-a manual version bump.
+Nothing is version-pinned. Every tool comes from a Fedora repo except
+`fvm`, whose installer fetches its own latest. The weekly CI schedule
+rebuilds against the latest `fedora-toolbox:42` base, which picks up
+security updates without a manual bump.
